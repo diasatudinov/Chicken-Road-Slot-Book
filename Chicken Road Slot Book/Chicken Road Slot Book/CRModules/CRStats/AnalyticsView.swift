@@ -1,3 +1,11 @@
+//
+//  AnalyticsView.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 // MARK: - Analytics
 
 struct AnalyticsView: View {

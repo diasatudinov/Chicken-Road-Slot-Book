@@ -1,3 +1,11 @@
+//
+//  SessionStatus.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 enum SessionStatus: String, Codable {
     case booked
     case active

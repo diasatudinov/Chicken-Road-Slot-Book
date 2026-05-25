@@ -1,3 +1,11 @@
+//
+//  InfoColumn.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 // MARK: - Reusable
 
 struct InfoColumn: View {

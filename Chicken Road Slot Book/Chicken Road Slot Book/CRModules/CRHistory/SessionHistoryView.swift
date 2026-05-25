@@ -1,3 +1,11 @@
+//
+//  SessionHistoryView.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 // MARK: - History
 
 struct SessionHistoryView: View {

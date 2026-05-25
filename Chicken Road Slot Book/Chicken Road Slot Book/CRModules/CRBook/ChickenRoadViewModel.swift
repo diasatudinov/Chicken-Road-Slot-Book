@@ -1,3 +1,11 @@
+//
+//  ChickenRoadViewModel.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 // MARK: - ViewModel
 
 @MainActor
@@ -276,74 +284,6 @@ final class ChickenRoadViewModel: ObservableObject {
     }
 
     func seedIfNeeded() {
-        guard sessions.isEmpty else { return }
-        let calendar = Calendar.current
-        let now = Date()
-
-        sessions = [
-            GameSession(
-                platform: "BC Game",
-                startDate: calendar.date(byAdding: .day, value: 1, to: now) ?? now,
-                durationMinutes: 90,
-                bankrollLimit: 300,
-                takeProfit: 450,
-                startedBalance: 300
-            ),
-            GameSession(
-                platform: "Rollbit",
-                startDate: calendar.date(byAdding: .day, value: 3, to: now) ?? now,
-                durationMinutes: 120,
-                bankrollLimit: 400,
-                takeProfit: 700,
-                startedBalance: 400
-            ),
-            GameSession(
-                platform: "Stake.com",
-                startDate: calendar.date(byAdding: .day, value: -1, to: now) ?? now,
-                durationMinutes: 135,
-                bankrollLimit: 500,
-                takeProfit: 750,
-                status: .completed,
-                startedBalance: 500,
-                currentBalance: 720,
-                finalBalance: 720,
-                result: 220,
-                playedSeconds: 8100,
-                completedAt: calendar.date(byAdding: .hour, value: -18, to: now),
-                bestMultiplier: 12.4
-            ),
-            GameSession(
-                platform: "BC Game",
-                startDate: calendar.date(byAdding: .day, value: -3, to: now) ?? now,
-                durationMinutes: 90,
-                bankrollLimit: 300,
-                takeProfit: 450,
-                status: .stopped,
-                startedBalance: 300,
-                currentBalance: 220,
-                finalBalance: 220,
-                result: -80,
-                playedSeconds: 5400,
-                completedAt: calendar.date(byAdding: .day, value: -3, to: now),
-                stoppedByLimit: true,
-                bestMultiplier: 3.2
-            ),
-            GameSession(
-                platform: "Rollbit",
-                startDate: calendar.date(byAdding: .day, value: -5, to: now) ?? now,
-                durationMinutes: 180,
-                bankrollLimit: 600,
-                takeProfit: 850,
-                status: .completed,
-                startedBalance: 600,
-                currentBalance: 850,
-                finalBalance: 850,
-                result: 250,
-                playedSeconds: 10800,
-                completedAt: calendar.date(byAdding: .day, value: -5, to: now),
-                bestMultiplier: 45.2
-            )
-        ]
     }
 
     private func startTimer() {

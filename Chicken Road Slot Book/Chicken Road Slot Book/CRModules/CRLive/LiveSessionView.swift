@@ -1,3 +1,12 @@
+//
+//  LiveSessionView.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
+
 struct LiveSessionView: View {
     @EnvironmentObject private var viewModel: ChickenRoadViewModel
 
@@ -83,6 +92,7 @@ struct LiveSessionContent: View {
 
             HStack(spacing: 12) {
                 BalanceCard(
+                    viewModel: viewModel,
                     title: "CURRENT",
                     value: money(session.currentBalance),
                     subtitle: "Started: \(money(session.startedBalance))",
@@ -110,7 +120,7 @@ struct LiveSessionContent: View {
 
             HStack(spacing: 12) {
                 Button {
-                    viewModel.askStopSession()
+                    viewModel.completeLiveSession()
                 } label: {
                     Label("Stop Session", systemImage: "stop")
                         .frame(maxWidth: .infinity)
@@ -132,23 +142,6 @@ struct LiveSessionContent: View {
                         .cornerRadius(14)
                 }
             }
-
-            Button {
-                viewModel.completeLiveSession()
-            } label: {
-                Label("Complete", systemImage: "checkmark.circle")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.mint.opacity(0.9))
-                    .foregroundColor(.white)
-                    .cornerRadius(14)
-            }
-
-            HStack(spacing: 10) {
-                Button("− $10") { viewModel.changeCurrentBalance(by: -10) }
-                Button("+ $10") { viewModel.changeCurrentBalance(by: 10) }
-            }
-            .buttonStyle(BalanceSmallButtonStyle())
         }
         .alert("Current Balance", isPresented: Binding(get: { !balanceText.isEmpty }, set: { if !$0 { balanceText = "" } })) {
             TextField("Balance", text: $balanceText)
@@ -199,36 +192,13 @@ struct NoLiveSessionView: View {
 struct RoadChickenView: View {
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 22)
-                .fill(LinearGradient(colors: [.indigo.opacity(0.8), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing))
-
-            HStack(spacing: 26) {
-                RoadLane(multiplier: "1.12x")
-                Text("🐔")
-                    .font(.system(size: 72))
-                RoadLane(multiplier: "1.12x")
-            }
-        }
-        .frame(height: 176)
-    }
-}
-
-struct RoadLane: View {
-    let multiplier: String
-
-    var body: some View {
-        VStack(spacing: 12) {
-            Text(multiplier)
-                .font(.caption.bold())
-                .foregroundColor(.white)
-                .padding(10)
-                .background(Circle().fill(Color.white.opacity(0.2)))
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.white.opacity(0.5))
-                .frame(width: 4, height: 80)
+            Image(.chickenImageCR)
+                .resizable()
+                .scaledToFit()
         }
     }
 }
+
 
 struct TimerCard: View {
     let session: GameSession
@@ -264,6 +234,7 @@ struct TimerCard: View {
 }
 
 struct BalanceCard: View {
+    @ObservedObject var viewModel: ChickenRoadViewModel
     let title: String
     let value: String
     let subtitle: String
@@ -276,10 +247,6 @@ struct BalanceCard: View {
                     .font(.caption2.bold())
                     .foregroundColor(.gray)
                 Spacer()
-                Button(action: editAction) {
-                    Image(systemName: "pencil")
-                        .foregroundColor(.gray)
-                }
             }
             Text(value)
                 .font(.title2.bold())
@@ -287,6 +254,32 @@ struct BalanceCard: View {
             Text(subtitle)
                 .font(.caption)
                 .foregroundColor(.gray)
+            
+            HStack(spacing: 0) {
+                Button {
+                    viewModel.changeCurrentBalance(by: -10)
+                } label: {
+                    Text("−")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 0)
+                        .background(.white.opacity(0.2))
+                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 100, bottomLeadingRadius: 100))
+                }
+                
+                Button {
+                    viewModel.changeCurrentBalance(by: 10)
+                } label: {
+                    Text("+")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 0)
+                        .background(.white.opacity(0.2))
+                        .clipShape(UnevenRoundedRectangle(bottomTrailingRadius: 100, topTrailingRadius: 100))
+                }
+            }
         }
         .padding()
         .frame(maxWidth: .infinity)
@@ -312,6 +305,30 @@ struct MetricCard: View {
             Text(subtitle)
                 .font(.caption)
                 .foregroundColor(.gray)
+            
+            HStack(spacing: 0) {
+                Button {
+                } label: {
+                    Text("−")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 0)
+                        .background(.white.opacity(0.2))
+                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 100, bottomLeadingRadius: 100))
+                }
+                
+                Button {
+                } label: {
+                    Text("+")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 0)
+                        .background(.white.opacity(0.2))
+                        .clipShape(UnevenRoundedRectangle(bottomTrailingRadius: 100, topTrailingRadius: 100))
+                }
+            }.opacity(0)
         }
         .padding()
         .frame(maxWidth: .infinity)
@@ -344,47 +361,55 @@ struct CompletionSheetView: View {
     var body: some View {
         ZStack {
             AppColors.sheetBackground.ignoresSafeArea()
-
-            VStack(spacing: 18) {
-                Text("🐔")
-                    .font(.system(size: 72))
-                Text("Session Complete!")
-                    .font(.title2.bold())
-                    .foregroundColor(.white)
-                Text("Great discipline — you followed your plan.")
-                    .foregroundColor(.gray)
-                    .font(.subheadline)
-
-                if let session = viewModel.liveSession {
-                    HStack(spacing: 12) {
-                        InfoBox(title: "Duration", value: timeString(from: session.playedSeconds), color: .white)
-                        InfoBox(title: "Result", value: signedMoney(session.pnl), color: session.pnl >= 0 ? .mint : .red)
-                        InfoBox(title: "Discipline", value: "\(viewModel.disciplinePercent)%", color: AppColors.accent)
-                    }
-                    .padding()
-                    .background(AppColors.card)
-                    .cornerRadius(16)
-                }
-
-                TextField("Result, e.g. 220 or -85", text: $viewModel.resultInput)
-                    .keyboardType(.numbersAndPunctuation)
-                    .padding()
-                    .background(AppColors.input)
-                    .cornerRadius(12)
-                    .foregroundColor(.white)
-
-                Button {
-                    viewModel.saveResultInput()
-                } label: {
-                    Label("Done", systemImage: "checkmark.circle")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(AppColors.purpleGradient)
+            ScrollView {
+                VStack(spacing: 18) {
+                    Image(.screamChickenCR)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 138)
+                    Text("Session Complete!")
+                        .font(.title2.bold())
                         .foregroundColor(.white)
-                        .cornerRadius(14)
+                    Text("Great discipline — you followed your plan.")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                    
+                    if let session = viewModel.liveSession {
+                        HStack(spacing: 12) {
+                            InfoBox(title: "Duration", value: timeString(from: session.playedSeconds), color: .white)
+                            InfoBox(title: "Result", value: signedMoney(session.pnl), color: session.pnl >= 0 ? .mint : .red)
+                            InfoBox(title: "Discipline", value: "\(viewModel.disciplinePercent)%", color: AppColors.accent)
+                        }
+                        .padding()
+                        .background(AppColors.card)
+                        .cornerRadius(16)
+                    }
+                    
+                    TextField("Result, e.g. 220 or -85", text: $viewModel.resultInput)
+                        .keyboardType(.numbersAndPunctuation)
+                        .padding()
+                        .background(AppColors.input)
+                        .cornerRadius(12)
+                        .foregroundColor(.white)
+                    
+                    Button {
+                        viewModel.saveResultInput()
+                    } label: {
+                        Label("Done", systemImage: "checkmark.circle")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(AppColors.purpleGradient)
+                            .foregroundColor(.white)
+                            .cornerRadius(14)
+                    }
                 }
+                .padding(24)
             }
-            .padding(24)
         }
     }
+}
+
+#Preview {
+    LiveSessionView()
+        .environmentObject(ChickenRoadViewModel())
 }

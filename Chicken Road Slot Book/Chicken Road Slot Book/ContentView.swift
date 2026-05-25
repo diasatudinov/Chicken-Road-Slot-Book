@@ -2,7 +2,6 @@
 //  ContentView.swift
 //  Chicken Road Slot Book
 //
-//  Created by Dias Atudinov on 25.05.2026.
 //
 
 import SwiftUI

@@ -1,3 +1,11 @@
+//
+//  ProfileView.swift
+//  Chicken Road Slot Book
+//
+//
+
+import SwiftUI
+
 // MARK: - Profile
 
 struct ProfileView: View {
