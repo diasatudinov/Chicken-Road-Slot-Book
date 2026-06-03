@@ -406,6 +406,7 @@ struct CompletionSheetView: View {
                 .padding(24)
             }
         }
+        .hideKeyboardOnTap()
     }
 }
 

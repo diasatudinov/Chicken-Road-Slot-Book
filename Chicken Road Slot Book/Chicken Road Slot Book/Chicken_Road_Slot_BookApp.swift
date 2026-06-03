@@ -10,7 +10,7 @@ import SwiftUI
 struct Chicken_Road_Slot_BookApp: App {
     var body: some Scene {
         WindowGroup {
-            CRMenuView()
+            CRMenuContainer()
         }
     }
 }

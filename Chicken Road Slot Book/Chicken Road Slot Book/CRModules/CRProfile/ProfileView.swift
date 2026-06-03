@@ -16,11 +16,13 @@ struct ProfileView: View {
             VStack(spacing: 26) {
                 VStack(spacing: 12) {
                     ZStack(alignment: .bottomTrailing) {
-                        Text("🐔")
-                            .font(.system(size: 72))
+                        Image(.avatarCR)
+                            .resizable()
+                            .scaledToFit()
+                            .padding()
                             .frame(width: 110, height: 110)
                             .background(Circle().fill(AppColors.accent))
-                        Text("7")
+                        Text("1")
                             .font(.headline.bold())
                             .foregroundColor(.white)
                             .frame(width: 32, height: 32)
@@ -30,10 +32,10 @@ struct ProfileView: View {
                     Text("Alex Johnson")
                         .font(.title.bold())
                         .foregroundColor(.white)
-                    Text("Slot Master · Level 7")
+                    Text("Slot Master · Level 1")
                         .foregroundColor(.gray)
 
-                    Text("🔥  12-Day Discipline Streak")
+                    Text("🔥  1-Day Discipline Streak")
                         .font(.headline.bold())
                         .foregroundColor(.white)
                         .padding(.horizontal, 22)
@@ -66,29 +68,16 @@ struct ProfileView: View {
                     Text("Settings")
                         .font(.title2.bold())
                         .foregroundColor(.white)
-
+                    
                     VStack(spacing: 0) {
                         SettingsToggle(title: "Notifications", icon: "bell", isOn: $viewModel.notificationsEnabled)
                         Divider().background(Color.white.opacity(0.08))
                         SettingsToggle(title: "Bankroll Reminders", icon: "wallet.pass", isOn: $viewModel.bankrollRemindersEnabled)
                         Divider().background(Color.white.opacity(0.08))
                         SettingsToggle(title: "Sound Effects", icon: "speaker.wave.2", isOn: $viewModel.soundEffectsEnabled)
-                        Divider().background(Color.white.opacity(0.08))
-                        SettingsToggle(title: "Dark Mode", icon: "moon", isOn: $viewModel.darkModeEnabled)
                     }
                     .background(AppColors.card)
                     .cornerRadius(22)
-                }
-
-                Button {} label: {
-                    Label("Log Out", systemImage: "rectangle.portrait.and.arrow.right")
-                        .font(.headline.bold())
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.red.opacity(0.16))
-                        .foregroundColor(.red)
-                        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color.red.opacity(0.45)))
-                        .cornerRadius(18)
                 }
             }
             .padding(.horizontal, 20)
@@ -147,4 +136,9 @@ struct SettingsToggle: View {
         }
         .padding()
     }
+}
+
+#Preview {
+    ProfileView()
+        .environmentObject(ChickenRoadViewModel())
 }

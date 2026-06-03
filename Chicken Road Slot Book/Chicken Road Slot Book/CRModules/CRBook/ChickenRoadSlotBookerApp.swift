@@ -294,6 +294,7 @@ struct BookingSheetView: View {
         } message: {
             Text("\(viewModel.draftPlatform), \(viewModel.draftStartDate.formatted(date: .abbreviated, time: .shortened)), \(viewModel.draftDurationMinutes) minutes")
         }
+        .hideKeyboardOnTap()
     }
 }
 
@@ -396,6 +397,7 @@ struct MoneyInputRow: View {
         .padding()
         .background(AppColors.card)
         .cornerRadius(16)
+        .hideKeyboardOnTap()
     }
 }
 
@@ -417,6 +419,7 @@ struct PlatformInputRow: View {
         .padding()
         .background(AppColors.card)
         .cornerRadius(16)
+        .hideKeyboardOnTap()
     }
 }
 

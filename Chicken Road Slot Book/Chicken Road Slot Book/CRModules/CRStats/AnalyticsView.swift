@@ -150,7 +150,7 @@ struct BarChartCard: View {
             }
 
             HStack(alignment: .bottom, spacing: 18) {
-                ForEach(stats.isEmpty ? mockStats : stats) { stat in
+                ForEach(stats) { stat in
                     VStack(spacing: 8) {
                         RoundedRectangle(cornerRadius: 6)
                             .fill(AppColors.purpleGradient)

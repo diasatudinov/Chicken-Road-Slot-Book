@@ -6,6 +6,23 @@
 
 import SwiftUI
 
+struct CRMenuContainer: View {
+    @AppStorage("firstOpenSC") var firstOpen: Bool = true
+    
+    var body: some View {
+        ZStack {
+            if firstOpen {
+                CROnboardingView(getStartBtnTapped: {
+                    firstOpen = false
+                })
+            } else {
+                CRMenuView()
+            }
+        }
+        
+    }
+}
+
 struct CRMenuView: View {
     @StateObject private var viewModel = ChickenRoadViewModel()
     
@@ -18,6 +35,7 @@ struct CRMenuView: View {
             BottomTabBar(selectedTab: $viewModel.selectedTab)
         }
         .environmentObject(viewModel)
+        .hideKeyboardOnTap()
     }
     
     @ViewBuilder
